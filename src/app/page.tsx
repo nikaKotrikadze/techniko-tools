@@ -1,3 +1,4 @@
+import { WaitlistForm } from "@/components/WaitlistForm";
 import { ToolBrowser } from "@/components/ToolBrowser";
 import { getCategories, getPublishedTools } from "@/lib/data";
 
@@ -19,6 +20,10 @@ export default async function Home() {
           </a>{" "}
           and 14K+ followers.
         </p>
+        <div className="mt-2 flex max-w-md flex-col gap-1.5">
+          <p className="text-sm font-medium">Get new reviews in your inbox</p>
+          <WaitlistForm />
+        </div>
       </section>
       <ToolBrowser tools={tools} categories={categories} />
     </main>
