@@ -3,14 +3,16 @@ import { Geist } from "next/font/google";
 import Link from "next/link";
 import { Analytics } from "@/components/Analytics";
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: { default: "TechNiko Tools: AI tools I've actually tested", template: "%s | TechNiko Tools" },
   description: "A directory of AI tools reviewed by @thetechniko, with honest ratings, pricing, and video reviews.",
+  openGraph: { siteName: "TechNiko Tools", type: "website" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

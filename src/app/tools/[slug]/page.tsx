@@ -14,9 +14,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/tools/[slug]">): Promise<Metadata> {
   const tool = await getTool((await params).slug);
   if (!tool) return {};
+  const description = tool.tagline ?? `${tool.name}, tested and rated by @thetechniko.`;
   return {
     title: `${tool.name} review`,
-    description: tool.tagline ?? `${tool.name}, tested and rated by @thetechniko.`,
+    description,
+    alternates: { canonical: `/tools/${tool.slug}` },
+    openGraph: { siteName: "TechNiko Tools", title: `${tool.name} review | TechNiko Tools`, description, url: `/tools/${tool.slug}` },
   };
 }
 
@@ -25,9 +28,26 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
   if (!tool) notFound();
   const related = await getRelatedTools(tool);
   const shortcode = tool.reel_url ? reelShortcode(tool.reel_url) : null;
+  // Structured data so search engines can show the rating. "<" escaped so text can't close the script tag.
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: tool.name,
+    description: tool.tagline ?? undefined,
+    url: tool.website_url,
+    applicationCategory: tool.category?.name,
+    offers: tool.pricing_type !== "paid" && { "@type": "Offer", price: 0, priceCurrency: "USD" },
+    review: tool.rating !== null && {
+      "@type": "Review",
+      author: { "@type": "Person", name: "Niko (@thetechniko)" },
+      reviewRating: { "@type": "Rating", ratingValue: tool.rating, bestRating: 5, worstRating: 1 },
+      reviewBody: tool.verdict ?? undefined,
+    },
+  }).replace(/</g, "\\u003c");
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
       <nav aria-label="Breadcrumb" className="text-sm text-muted">
         <Link href="/" className="hover:text-foreground">
           All tools

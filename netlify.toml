@@ -1,0 +1,4 @@
+# Netlify detects Next.js and installs its runtime automatically (ISR and revalidatePath included).
+[build]
+  command = "npm run build"
+  publish = ".next"

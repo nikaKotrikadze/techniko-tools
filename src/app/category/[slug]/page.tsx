@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/category/[slug]">
   return {
     title: `Best AI ${category.name} tools`,
     description: `AI ${category.name.toLowerCase()} tools tested and rated by @thetechniko.`,
+    alternates: { canonical: `/category/${category.slug}` },
   };
 }
 
@@ -29,7 +30,7 @@ export default async function CategoryPage({ params }: PageProps<"/category/[slu
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-10">
-      <nav aria-label="Categories" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+      <nav aria-label="Categories" className="flex flex-wrap gap-2">
         <Link href="/" className="shrink-0 rounded-full border border-border px-3.5 py-1.5 text-sm hover:border-accent">
           All
         </Link>
