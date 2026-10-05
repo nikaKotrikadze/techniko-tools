@@ -34,3 +34,12 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+@layer components {
+  .admin-input {
+    @apply w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-base font-normal outline-none focus:border-accent aria-invalid:border-red-500;
+  }
+  .admin-btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60 dark:text-black;
+  }
+}
